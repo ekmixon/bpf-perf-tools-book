@@ -111,8 +111,8 @@ TRACEPOINT_PROBE(syscalls, sys_enter_mmap) {
 
 if debug or args.ebpf:
     print(bpf_text)
-    if args.ebpf:
-        exit()
+if args.ebpf:
+    exit()
 
 # event data
 TASK_COMM_LEN = 16      # linux/sched.h

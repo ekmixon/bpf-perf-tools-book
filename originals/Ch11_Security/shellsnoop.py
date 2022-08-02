@@ -25,7 +25,7 @@ from sys import argv
 import sys
 
 def usage():
-    print("USAGE: %s PID" % argv[0])
+    print(f"USAGE: {argv[0]} PID")
     exit()
 
 # arguments
@@ -48,7 +48,7 @@ args = parser.parse_args()
 debug = 0
 
 if args.pid == 0:
-    print("USAGE: %s [-hs] PID" % argv[0])
+    print(f"USAGE: {argv[0]} [-hs] PID")
     exit()
 if args.replay:
     args.noclear = True
@@ -145,16 +145,15 @@ def print_event(cpu, data, size):
     if last_ts == 0:
         last_ts = event.ts
     if args.replay:
-        delay_ms = (event.ts - last_ts) / 1000000
-        if delay_ms:
+        if delay_ms := (event.ts - last_ts) / 1000000:
             print("sleep %.2f" % (float(delay_ms) / 1000))
-        printable = event.buf[0:event.count]
+        printable = event.buf[:event.count]
         printable = printable.replace('\\', '\\\\')
         printable = printable.replace('\'', '\\047')
         print("echo -e '%s\\c'" % printable)
         last_ts = event.ts
     else:
-        print("%s" % event.buf[0:event.count], end="")
+        print(f"{event.buf[:event.count]}", end="")
     sys.stdout.flush()
 
 # loop with callback to print_event
